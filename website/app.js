@@ -1,7 +1,11 @@
 /* Global Variables */
 const baseurl = "https://api.openweathermap.org/data/2.5/weather?zip=";
 const api_key = "&appid=9f0d4cf322fd40fb9edbfefe570b3e74";
-const server = "https://127.0.0.1:4000";
+const server = "https://127.0.0.1:5500";
+let d = new Date();
+let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+const error = document.getElementById("zip-error");
+
 function getData(){
     const zipcode = document.getElementById("zip").value;
     const feeling = document.getElementById("feelings").value;
@@ -17,19 +21,30 @@ function getData(){
                 city,
                 temp : Math.round(temp),
                 description,
-                feelings,
+                feeling,
             };
-            postData(server + "/add", info);
+            postData("/add", info);
             updatingUI();
         }
     });
 };
+
 document.getElementById("generate").addEventListener("click", getData);
+
 const getWeather = async(zip)=> {
     try{
         const res= await fetch(baseurl + zip + api_key);
         const data = await res.json();
-        return data;
+        if(data.cod != 200){
+            error.innerHTML = data.message;
+            error.className = "small";
+            setTimeout(()=> {error.className = "valid-feedback"; error.innerHTML = ""}, 2000)
+            error.innerHTML = data.message;
+        }
+        else{
+            console.log(data);
+            return data;
+        }
     }
     catch(error){
         console.log(error);
@@ -39,6 +54,7 @@ const getWeather = async(zip)=> {
 const postData  = async(url="", info = {}) => {
     const res = await fetch(url, {
         method : "POST",
+        credentials: 'same-origin',
         header: {
             "Content-Type" : "application/json",
         },
@@ -55,18 +71,16 @@ const postData  = async(url="", info = {}) => {
 };
 
 const updatingUI = async ()=>{
-    const res = await fetch(server, "/all");
+    const request = await fetch("/all");
     try{
-        const savedData = await res.json();
+        const savedData = await request.json();
         document.getElementById("date").innerHTML = savedData.newData;
-        document.getElementById().innerHTML = savedData.city;
-        document.getElementById().innerHTML = savedData.temp + "&degc";
-        document.getElementById().innerHTML = savedData.description;
+        document.getElementById("city").innerHTML = savedData.city;
+        document.getElementById("temp").innerHTML = savedData.temp + "&degc";
         document.getElementById().innerHTML = savedData.feelings;
     }catch(error){
         console.log(error);
     }
 }
+
 // Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();

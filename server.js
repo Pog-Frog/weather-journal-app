@@ -1,27 +1,37 @@
 const express = require("express")
 const app = express();
 const cors = require("cors");
-app.use(cors());
+const port = 8000;
 const bodyParser = require("body-parser");
+projectData = {};
+
+
+app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
 app.use(express.static("website"));
+
 function getAll(req, res) {
-    res.status(200).send(projectData);
+    res.send(projectData);
 }
-app.get("/all", getAll);
-function postData(req, res) {
+
+function postData (req, res){
     projectData = req.body;
+    res.send(projectData);
     console.log(projectData);
 }
+
 app.post("/add", postData);
-const port = 4000;
-const hostname = "127.0.0.1";
-function listening() {
-    console.log("server starting at https://${hostname}:${port}/");
+
+app.get("/all", getAll);
+
+function listening(){
+    console.log(`server starting at ${port}`);
 }
+
 app.listen(port, listening);
 // Require Express to run server and routes
 
@@ -34,7 +44,6 @@ app.listen(port, listening);
 // Cors for cross origin allowance
 
 // Initialize the main project folder
-app.use(express.static('website'));
 
 
 // Setup Server
