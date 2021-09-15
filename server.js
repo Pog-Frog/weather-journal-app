@@ -27,16 +27,18 @@ function getAll(req, res) {
 
 function postData(req, res) {
   projectData = req.body;
-  res.send(projectData);
   console.log(projectData);
+  res.send(projectData);
+  
 }
 
 app.post("/add", postData);
 
 app.get("/all", getAll);
 
+// Start up an instance of app
+app.listen(port, listening);
+
 function listening() {
   console.log(`server starting at ${port}`);
 }
-// Start up an instance of app
-app.listen(port, listening);

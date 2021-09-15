@@ -1,7 +1,6 @@
 /* Global Variables */
 const baseurl = "https://api.openweathermap.org/data/2.5/weather?zip=";
 const api_key = "&appid=9f0d4cf322fd40fb9edbfefe570b3e74";
-const server = "https://127.0.0.1:5500";
 let d = new Date();
 // Create a new date instance dynamically with JS
 let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
@@ -59,7 +58,7 @@ const getWeather = async (zip) => {
 /* Function to POST data */
 
 const postData = async (url = "", info = {}) => {
-    const res = await fetch(url, {
+    const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
         header: {
@@ -68,7 +67,7 @@ const postData = async (url = "", info = {}) => {
         body: JSON.stringify(info),
     });
     try {
-        const newData = await res.json();
+        const newData = await response.json();
         console.log("New Data: ", newData);
         return newData;
     } catch (error) {
@@ -89,5 +88,3 @@ const updatingUI = async () => {
         console.log(error);
     }
 };
-
-// Create a new date instance dynamically with JS
