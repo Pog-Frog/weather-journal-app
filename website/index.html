@@ -27,7 +27,7 @@
       <video autoplay muted loop>
         <source src="styles/assets/Pexels Videos 2169880.mp4">
       </video>
-      <form class="needs-validation" novalidate="" style="position: absolute;" method="GET">
+      <form class="needs-validation" novalidate="" style="position: absolute;max-height: 350px;" method="GET">
         <label class="form-label" style="font: bolder;"><strong>Enter Zipcode</strong> <img src="styles/assets/mail.png"
             style="width: 50px; height: 50px;"></label>
         <input type="text" class="form-control" id="zip" placeholder="example: 456asd56" style="min-width: 300px;"
@@ -37,24 +37,19 @@
         </div>
         <br>
         <label class="form-label" style="font: bolder;"><strong>How are you feeling today?</strong></label>
-        <textarea type="textbox" id="feelings" class="form-control" style="min-width: 300px; min-height: 250px;"
+        <textarea type="textbox" id="feelings" class="form-control" style="min-width: 250px; min-height: 250px;"
           required=""></textarea>
         <div class="invalid-feedback" for="feelings">
           Enter Topic
         </div>
         <hr>
         <button type="button" id='generate' class="btn btn-primary btn-lg btn-block">Generate</button>
-        <div class="holder entry" style="position: absolute;">
-          <div class="title">Most Recent Entry</div>
           <div id="entryHolder">
             <div id="date"></div>
             <div id="temp"></div>
             <div id="content"></div>
           </div>
-        </div>
-      </form>
-      <hr>
-      
+        </form>
     </div>
   </main>
 
