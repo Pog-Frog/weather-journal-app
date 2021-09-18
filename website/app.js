@@ -1,29 +1,28 @@
 /* Global Variables */
+const server = "http://http://127.0.0.1:5500"
 const baseurl = "https://api.openweathermap.org/data/2.5/weather?zip=";
 const api_key = "&appid=9f0d4cf322fd40fb9edbfefe570b3e74";
 let d = new Date();
 // Create a new date instance dynamically with JS
 let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 const error = document.getElementById("zip-error");
+const projectData = {
+    name: "",
+    temp: "",
+    feelings: "",
+    date: newDate
+};
 
 function getData() {
     const zipcode = document.getElementById("zip").value;
     const feeling = document.getElementById("feelings").value;
     getWeather(zipcode).then((data) => {
         if (data) {
-            const {
-                main: { temp },
-                name: city,
-                weather: [{ description }],
-            } = data;
-            const info = {
-                newDate,
-                city,
-                temp: Math.round(temp),
-                description,
-                feeling,
-            };
-            postData("/add", info);
+            console.log(data);
+            projectData["name"] = data["name"];
+            projectData["temp"] = Math.round(data["main"]["temp"] - 273.15);
+            projectData["feelings"] = feeling;
+            postData("/add", projectData);
             updatingUI();
         }
     });
@@ -57,22 +56,16 @@ const getWeather = async (zip) => {
 
 /* Function to POST data */
 
-const postData = async (url = "", info = {}) => {
+const postData = async (url = "", info) => {
     const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
         header: {
-            "Content-Type": "application/json",
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(info),
     });
-    try {
-        const newData = await response.json();
-        console.log("New Data: ", newData);
-        return newData;
-    } catch (error) {
-        console.log(error);
-    }
 };
 
 const updatingUI = async () => {
@@ -80,10 +73,10 @@ const updatingUI = async () => {
     try {
         // update new entry values
         const savedData = await request.json();
-        document.getElementById("date").innerHTML = savedData.newData;
-        document.getElementById("city").innerHTML = savedData.city;
-        document.getElementById("temp").innerHTML = savedData.temp + "&degc";
-        document.getElementById("content").innerHTML = savedData.feelings;
+        document.getElementById("date").innerHTML = projectData.date;
+        document.getElementById("city").innerHTML = projectData.name;
+        document.getElementById("temp").innerHTML = projectData.temp + "&degc";
+        document.getElementById("content").innerHTML = projectData.feelings;
     } catch (error) {
         console.log(error);
     }

@@ -57,7 +57,7 @@ form {
 }
 
 #content::before {
-  content: "You're feeling ";
+  content: "You're feeling : ";
 }
 
 .headline {
