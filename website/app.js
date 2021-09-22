@@ -20,7 +20,7 @@ function getData() {
         if (data) {
             console.log(data);
             projectData["name"] = data["name"];
-            projectData["temp"] = data["main"]["temp"];
+            projectData["temp"] = Math.round(data["main"]["temp"]);
             projectData["feelings"] = feeling;
             postData("/add", projectData);
             updatingUI();
