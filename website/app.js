@@ -1,10 +1,10 @@
 /* Global Variables */
 const server = "http://http://127.0.0.1:5500"
 const baseurl = "https://api.openweathermap.org/data/2.5/weather?zip=";
-const api_key = "&appid=9f0d4cf322fd40fb9edbfefe570b3e74";
+const api_key = "&appid=9f0d4cf322fd40fb9edbfefe570b3e74&units=metric";
 let d = new Date();
 // Create a new date instance dynamically with JS
-let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
+let newDate = d.getMonth() + 1 + '.' + d.getDate() + '.' + d.getFullYear();
 const error = document.getElementById("zip-error");
 const projectData = {
     name: "",
@@ -20,7 +20,7 @@ function getData() {
         if (data) {
             console.log(data);
             projectData["name"] = data["name"];
-            projectData["temp"] = Math.round(data["main"]["temp"] - 273.15);
+            projectData["temp"] = data["main"]["temp"];
             projectData["feelings"] = feeling;
             postData("/add", projectData);
             updatingUI();
